@@ -1,0 +1,12 @@
+seen_jobs.json
+seen_jobs.json.tmp
+job-tracker.exe
+job-tracker-bg.exe
+tracker.log
+*.exe
+*.log
+
+# scratch files from researching company career sites
+*.html
+*.js
+cj.txt
