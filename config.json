@@ -304,6 +304,11 @@
     {"name": "Hevo Data", "source": "lever", "slug": "hevodata"},
     {"name": "100ms", "source": "lever", "slug": "100ms"},
     {"name": "Toptal", "source": "lever", "slug": "toptal"},
-    {"name": "apna", "source": "workable", "slug": "apna"}
+    {"name": "apna", "source": "workable", "slug": "apna"},
+
+    {"name": "Getro VC board 8672", "source": "getro", "slug": "8672", "query": "software engineer", "location": "India"},
+    {"name": "Himalayas", "source": "himalayas"},
+    {"name": "Jobicy", "source": "jobicy", "query": "apac"},
+    {"name": "Working Nomads", "source": "workingnomads"}
   ]
 }
