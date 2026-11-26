@@ -20,7 +20,33 @@
       "software dev engineer", "application development engineer", "application developer",
       "python developer", "c++ developer", "go developer", "node developer", "nodejs developer",
       "react developer", "frontend developer", "front end developer", "full stack developer",
-      "software engineering", "amts", "backend", "back-end", "sde 1", "sde 2", "sde i", "sde ii"
+      "software engineering", "amts", "backend", "back-end", "sde 1", "sde 2", "sde i", "sde ii",
+      "forward deployed engineer", "solutions engineer", "solution engineer"
+    ],
+    "title_include_generic": [
+      "developer", "programmer", "associate engineer",
+      "engineer i", "engineer ii", "engineer 1", "engineer 2",
+      "re:^\\W*engineer\\b"
+    ],
+    "title_exclude_generic": [
+      "data", "big data", "bigdata", "etl", "pyspark", "spark", "analytics", "bi", "power bi", "tableau", "database",
+      "devops", "devsecops", "sre", "reliability", "cloud", "network", "networking", "server", "virtualization",
+      "infrastructure", "system", "systems", "it", "end user",
+      "ai", "ml", "genai", "agentic", "machine learning", "artificial intelligence",
+      "security", "qa", "test", "tester", "testing", "validation", "verification", "quality",
+      "ios", "android", "mobile",
+      "salesforce", "servicenow", "sap", "abap", "s/4", "hana", "workday", "power platform", "power apps",
+      "power automate", "mainframe", "axiom", "avaloq", "boomi", "apriso", "mendix", "stibo", "ifs", "oic",
+      "wincc", "genesys", "vermilion", "pega", "bpm", "wordpress", "hubspot", "copilot",
+      "courseware", "technical writer", "information developer",
+      "embedded", "automotive", "hw", "hardware", "electronic", "ecu", "bios", "uefi", "firmware", "kernel",
+      "5g", "baseband", "airbag", "braking", "brakes", "hmi", "functional safety", "model based", "model-based",
+      "layout", "cad", "structural", "civil", "turbine", "stress", "scada", "simulation", "meshing", "tooling",
+      "plant", "electromechanical", "instrumentation", "controls", "npi", "ip", "cell", "hbm", "ssd", "pqa", "ppat",
+      "design", "process", "supplier", "configuration management", "technical marketing", "digitalization",
+      "customer", "support", "success", "business", "applications engineer", "multimedia", "performance modelling",
+      "recon", "integration developer", "electrical", "mechanical", "rf", "manufacturing", "pkg", "equipment",
+      "switchgear", "generator", "pe", "services", "relations", "ascet", "alm", "application management"
     ],
     "title_exclude": [
       "senior", "sr", "snr", "staff", "principal", "lead", "leader", "manager", "director",
@@ -309,6 +335,32 @@
     {"name": "Getro VC board 8672", "source": "getro", "slug": "8672", "query": "software engineer", "location": "India"},
     {"name": "Himalayas", "source": "himalayas"},
     {"name": "Jobicy", "source": "jobicy", "query": "apac"},
-    {"name": "Working Nomads", "source": "workingnomads"}
+    {"name": "Working Nomads", "source": "workingnomads"},
+
+    {"name": "Lendingkart", "source": "recruiterbox", "slug": "lendingkart"},
+    {"name": "Exotel", "source": "recruiterbox", "slug": "exotel"},
+    {"name": "Ema", "source": "ashby", "slug": "ema"},
+    {"name": "Classplus", "source": "recruiterbox", "slug": "classplus"},
+    {"name": "PharmEasy", "source": "recruiterbox", "slug": "pharmeasy"},
+    {"name": "Atlys", "source": "ashby", "slug": "atlys"},
+    {"name": "Junglee Games", "source": "recruiterbox", "slug": "jungleegames"},
+    {"name": "WebEngage", "source": "recruiterbox", "slug": "webengage"},
+    {"name": "Capillary", "source": "recruiterbox", "slug": "capillary"},
+    {"name": "Jumbotail", "source": "recruiterbox", "slug": "jumbotail"},
+    {"name": "HealthifyMe", "source": "recruiterbox", "slug": "healthifyme"},
+    {"name": "Rocketlane", "source": "kula", "slug": "rocketlane"},
+    {"name": "Shipsy", "source": "smartrecruiters", "slug": "Shipsy", "query": "engineer", "location": "in"},
+    {"name": "Unacademy", "source": "recruiterbox", "slug": "unacademy"},
+    {"name": "Cashify", "source": "recruiterbox", "slug": "cashify"},
+    {"name": "Chargebee", "source": "recruiterbox", "slug": "chargebee"},
+    {"name": "Angel One", "source": "mynexthire", "slug": "angelone"},
+    {"name": "Khatabook", "source": "recruiterbox", "slug": "khatabook"},
+    {"name": "upGrad", "source": "recruiterbox", "slug": "upgrad"},
+    {"name": "CleverTap", "source": "kula", "slug": "clevertap"},
+    {"name": "Plum", "source": "kula", "slug": "plumhq"},
+    {"name": "Neysa", "source": "kula", "slug": "neysa"},
+    {"name": "SigNoz", "source": "ashby", "slug": "signoz"},
+    {"name": "Vahan", "source": "recruiterbox", "slug": "vahan"},
+    {"name": "Snapdeal", "source": "recruiterbox", "slug": "snapdeal"}
   ]
 }

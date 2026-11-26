@@ -47,7 +47,12 @@ type FilterConfig struct {
 	// Phrases that contain an excluded word but are fine, e.g.
 	// "member of technical staff" (excluded word: "staff").
 	TitleExcludeExceptions []string `json:"title_exclude_exceptions"`
-	Locations              []string `json:"locations"`
+	// Broad titles ("Developer", "Engineer II") that count only when the
+	// title names none of TitleExcludeGeneric's domains (SAP, hardware, data,
+	// DevOps…). Titles matching TitleInclude never go through this check.
+	TitleIncludeGeneric []string `json:"title_include_generic"`
+	TitleExcludeGeneric []string `json:"title_exclude_generic"`
+	Locations           []string `json:"locations"`
 	// Skip jobs whose description asks for more years than this.
 	// Jobs that don't state a number are kept. 0 disables the check.
 	MaxYearsExperience int `json:"max_years_experience"`

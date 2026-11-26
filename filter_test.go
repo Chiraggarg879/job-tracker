@@ -31,6 +31,38 @@ func TestFilterMatch(t *testing.T) {
 	}
 }
 
+func TestFilterGenericTitles(t *testing.T) {
+	f := NewFilter(FilterConfig{
+		TitleInclude:        []string{"software engineer", "software development engineer", "sde", "forward deployed engineer"},
+		TitleExclude:        []string{"senior"},
+		TitleIncludeGeneric: []string{"developer", "engineer ii", `re:^\W*engineer\b`},
+		TitleExcludeGeneric: []string{"data", "sap", "mechanical", "verification"},
+	})
+	tests := []struct {
+		title string
+		match bool
+	}{
+		{"Java Kafka Developer", true},
+		{"Engineer II - Software", true},
+		{"Engineer", true},
+		{"Forward Deployed Engineer", true},
+		{"SAP Developer", false},    // unwanted domain
+		{"Data Engineer II", false}, // unwanted domain
+		{"Engineer - Mechanical Component", false},
+		{"Senior Developer", false},       // seniority still excluded
+		{"Platform Engineer Lead", false}, // not a core or generic title
+		{"Design Verification Engineer", false},
+		// core titles ignore the generic domain list
+		{"Software Development Engineer - II, Verification Services", true},
+		{"SDE II - Data Platform", true},
+	}
+	for _, tt := range tests {
+		if got := f.Match(Job{Title: tt.title, Location: "India"}); got != tt.match {
+			t.Errorf("%q: got %v, want %v", tt.title, got, tt.match)
+		}
+	}
+}
+
 func TestWorkdayReqID(t *testing.T) {
 	for _, id := range []string{"JR2025205", "R-294544", "REF088312W", "1205422", "PT-JR039956", "R0109057"} {
 		if !workdayReqIDRe.MatchString(id) {

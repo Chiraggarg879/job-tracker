@@ -96,6 +96,13 @@ All in `config.json`:
   of experience: excludes senior/staff/lead/manager/III/intern. Note that **Google's
   "Software Engineer III" is L4**, which sometimes asks for only 1–2 years; remove `"iii"`
   if you want to see those too.
+- **`filters.title_include_generic`** / **`filters.title_exclude_generic`**: broad
+  titles ("Developer", "Programmer", "Associate Engineer", "Engineer II", titles
+  starting with "Engineer") count only when they name none of the unwanted
+  domains in `title_exclude_generic` (data, DevOps/SRE, AI/ML, QA, security,
+  mobile, SAP/Salesforce/ServiceNow, hardware, mechanical…). Core titles from
+  `title_include` skip this check, so "SDE II, Verification Services" still counts.
+  Entries starting with `re:` are regular expressions.
 - **`filters.title_exclude_exceptions`**: phrases that contain an excluded word but
   are fine, e.g. `"member of technical staff"` survives the `"staff"` exclusion.
   Level numbers like "III" / "Engineer 3" are *not* excluded: Google's SWE III or

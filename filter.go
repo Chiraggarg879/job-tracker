@@ -6,19 +6,28 @@ import (
 )
 
 type Filter struct {
-	include   []*regexp.Regexp
-	exclude   []*regexp.Regexp
-	keep      []*regexp.Regexp
-	locations []*regexp.Regexp
+	include        []*regexp.Regexp
+	exclude        []*regexp.Regexp
+	keep           []*regexp.Regexp
+	includeGeneric []*regexp.Regexp
+	excludeGeneric []*regexp.Regexp
+	locations      []*regexp.Regexp
 }
 
 // wordRegexps turns keywords into case-insensitive whole-word matchers, so
 // "sde" matches "SDE II" but not "Insider", and "sr" doesn't match "Src".
+// An entry starting with "re:" is used as a case-insensitive regular
+// expression instead, e.g. "re:^\W*engineer\b" for titles that start with
+// "Engineer".
 func wordRegexps(words []string) []*regexp.Regexp {
 	out := make([]*regexp.Regexp, 0, len(words))
 	for _, w := range words {
 		w = strings.TrimSpace(w)
 		if w == "" {
+			continue
+		}
+		if pat, ok := strings.CutPrefix(w, "re:"); ok {
+			out = append(out, regexp.MustCompile(`(?i)`+pat))
 			continue
 		}
 		out = append(out, regexp.MustCompile(`(?i)(^|[^a-z0-9])`+regexp.QuoteMeta(w)+`($|[^a-z0-9])`))
@@ -28,10 +37,12 @@ func wordRegexps(words []string) []*regexp.Regexp {
 
 func NewFilter(fc FilterConfig) *Filter {
 	return &Filter{
-		include:   wordRegexps(fc.TitleInclude),
-		exclude:   wordRegexps(fc.TitleExclude),
-		keep:      wordRegexps(fc.TitleExcludeExceptions),
-		locations: wordRegexps(fc.Locations),
+		include:        wordRegexps(fc.TitleInclude),
+		exclude:        wordRegexps(fc.TitleExclude),
+		keep:           wordRegexps(fc.TitleExcludeExceptions),
+		includeGeneric: wordRegexps(fc.TitleIncludeGeneric),
+		excludeGeneric: wordRegexps(fc.TitleExcludeGeneric),
+		locations:      wordRegexps(fc.Locations),
 	}
 }
 
@@ -50,7 +61,10 @@ func anyMatch(res []*regexp.Regexp, s string) bool {
 // it blank), so a missing field never hides a job.
 func (f *Filter) Match(j Job) bool {
 	if len(f.include) > 0 && !anyMatch(f.include, j.Title) {
-		return false
+		// Not a core title: a broad one counts only outside unwanted domains.
+		if !anyMatch(f.includeGeneric, j.Title) || anyMatch(f.excludeGeneric, j.Title) {
+			return false
+		}
 	}
 	// Exceptions are blanked out before the exclude check, so "Member of
 	// Technical Staff" isn't dropped for containing "staff".
