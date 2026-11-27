@@ -2,14 +2,20 @@ name: Job Tracker
 
 on:
   schedule:
-    # Times are UTC. 03:43, 07:43, 11:43 and 15:43 UTC are
-    # 9:13 AM, 1:13 PM, 5:13 PM and 9:13 PM IST. An odd minute, because
-    # GitHub delays or skips scheduled runs at :00 and :30 when busy.
+    # Times are UTC (IST = UTC + 5:30). Odd minutes, because GitHub delays
+    # or skips scheduled runs at :00 and :30 when it is busy.
+    # Main runs: 9:13 AM, 1:13 PM, 5:13 PM and 9:13 PM IST.
     - cron: "43 3,7,11,15 * * *"
+    # Backups, about 45 and 90 minutes after each main run. A backup does
+    # nothing if a check already succeeded in the last 2 hours, so it only
+    # matters when GitHub skipped the main run.
+    - cron: "27 4,8,12,16 * * *"
+    - cron: "11 5,9,13,17 * * *"
   workflow_dispatch: # adds a "Run workflow" button (works from the GitHub mobile app)
 
 permissions:
   contents: write # lets the run commit seen_jobs.json back
+  actions: read # lets a backup run see whether a recent run succeeded
 
 concurrency:
   group: job-tracker # never run two checks at once
@@ -20,25 +26,44 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Skip if a check already succeeded recently
+        id: recent
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          last=$(gh run list -R "$GITHUB_REPOSITORY" -w tracker.yml -s success -L 1 --json createdAt -q '.[0].createdAt')
+          if [ -n "$last" ] && [ $(( $(date +%s) - $(date -d "$last" +%s) )) -lt 7200 ]; then
+            echo "Last successful check started at $last; skipping this one."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.recent.outputs.skip != 'true'
 
       - uses: actions/setup-go@v5
+        if: steps.recent.outputs.skip != 'true'
         with:
           go-version-file: go.mod
+          cache: false
 
       - name: Build
+        if: steps.recent.outputs.skip != 'true'
         run: go build -o job-tracker .
 
       - name: Check for new jobs
+        if: steps.recent.outputs.skip != 'true'
         run: ./job-tracker -once
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
       - name: Save seen jobs
+        if: steps.recent.outputs.skip != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add seen_jobs.json
           git diff --cached --quiet || git commit -m "Update seen jobs"
+          git pull --rebase
           git push
